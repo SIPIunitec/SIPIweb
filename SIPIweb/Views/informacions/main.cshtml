@@ -1,0 +1,29 @@
+﻿@model IEnumerable<SIPIweb.Models.informacion>
+
+@{
+    ViewData["Title"] = "main";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Información de Interes</h1>
+<table class="table" width="300px">
+    <tbody>
+        @foreach (var item in Model) {
+                <tr width="33%">
+                    <td>
+                        <a href="#" onclick="abrirNoticia(@item.id_informacion);">@Html.DisplayFor(modelItem => item.informacion_titulo)</a> <br />
+                        @Html.DisplayFor(modelItem => item.informacion_fechaPublicacion)
+                   </td>
+                </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<script type="text/javascript">
+    function abrirNoticia(valor) {
+        let params = `target=_pop,scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no, width=600,height=400,left=100,top=100`;
+        window.open("informacions/detalleNoticia/" + valor, "Información", params);
+    }
+</script>
