@@ -27,7 +27,7 @@ namespace SIPIweb
         {
             var conexion = Configuration.GetConnectionString("DefaultConnection"); 		//** Se agrega la conexion **//
             services.AddControllersWithViews();							//** Viene por defecto **//
-            services.AddDbContext<SIPIContext>(options => options.UseSqlServer(conexion));	//** Agrega el nombre del nombreContext y en options agrega la conex de la bd **//
+            services.AddDbContext<sipiunitec_dbContext>(options => options.UseSqlServer(conexion));	//** Agrega el nombre del nombreContext y en options agrega la conex de la bd **//
 
         }
 
@@ -54,8 +54,8 @@ namespace SIPIweb
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Informacions}/{action=main}");
+                     name: "default",
+                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

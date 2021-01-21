@@ -1,0 +1,60 @@
+﻿@model SIPIweb.Models.tbl_usuario_tmp
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>tbl_usuario_tmp</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id_usuario_tmp" />
+            <div class="form-group">
+                <label asp-for="id_usuarioTipo" class="control-label"></label>
+                <input asp-for="id_usuarioTipo" class="form-control" />
+                <span asp-validation-for="id_usuarioTipo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="usuario_login" class="control-label"></label>
+                <input asp-for="usuario_login" class="form-control" />
+                <span asp-validation-for="usuario_login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="usuario_pass" class="control-label"></label>
+                <input asp-for="usuario_pass" class="form-control" />
+                <span asp-validation-for="usuario_pass" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="usuario_email" class="control-label"></label>
+                <input asp-for="usuario_email" class="form-control" />
+                <span asp-validation-for="usuario_email" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Estatus" /> @Html.DisplayNameFor(model => model.Estatus)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Observaciones" class="control-label"></label>
+                <input asp-for="Observaciones" class="form-control" />
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

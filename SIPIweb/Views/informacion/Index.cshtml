@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SIPIweb.Models.tbl_informacion>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.informacion_titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.informacion_cuerpo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.informacion_fechaPublicacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.informacion_fechaLimite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.id_usuarioNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.informacion_titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.informacion_cuerpo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.informacion_fechaPublicacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.informacion_fechaLimite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_usuarioNavigation.usuario_email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id_informacion">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id_informacion">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id_informacion">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

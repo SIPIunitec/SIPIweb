@@ -5,13 +5,43 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SQLserver" Version="5.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SQLserver" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\informacion\Create.cshtml" />
+    <None Include="Views\informacion\Delete.cshtml" />
+    <None Include="Views\informacion\Details.cshtml" />
+    <None Include="Views\informacion\Edit.cshtml" />
+    <None Include="Views\informacion\Index.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\usuarioRoles\Create.cshtml" />
+    <None Include="Views\usuarioRoles\Delete.cshtml" />
+    <None Include="Views\usuarioRoles\Details.cshtml" />
+    <None Include="Views\usuarioRoles\Edit.cshtml" />
+    <None Include="Views\usuarioRoles\Index.cshtml" />
+    <None Include="Views\usuarioTipo\Create.cshtml" />
+    <None Include="Views\usuarioTipo\Delete.cshtml" />
+    <None Include="Views\usuarioTipo\Details.cshtml" />
+    <None Include="Views\usuarioTipo\Edit.cshtml" />
+    <None Include="Views\usuarioTipo\Index.cshtml" />
+    <None Include="Views\usuario\Delete.cshtml" />
+    <None Include="Views\usuario\Details.cshtml" />
+    <None Include="Views\usuario\Index.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
 
 </Project>
