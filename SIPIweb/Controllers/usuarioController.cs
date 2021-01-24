@@ -44,30 +44,6 @@ namespace SIPIweb.Controllers
             return View(tbl_usuario);
         }
 
-        // GET: usuario/Create
-        public IActionResult Create()
-        {
-            ViewData["id_usuarioTipo"] = new SelectList(_context.tbl_usuarioTipos, "id_usuarioTipo", "usuarioTipo_nombre");
-            return View();
-        }
-
-        // POST: usuario/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_usuario,id_usuarioTipo,usuario_login,usuario_pass,usuario_email,usuario_createdDay")] tbl_usuario tbl_usuario)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(tbl_usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["id_usuarioTipo"] = new SelectList(_context.tbl_usuarioTipos, "id_usuarioTipo", "usuarioTipo_nombre", tbl_usuario.id_usuarioTipo);
-            return View(tbl_usuario);
-        }
-
         // GET: usuario/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {

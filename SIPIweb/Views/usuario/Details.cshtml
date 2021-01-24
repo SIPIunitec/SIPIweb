@@ -5,10 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Datos de Usuario</h1>
 
 <div>
-    <h4>tbl_usuario</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -16,12 +15,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.usuario_login)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.usuario_pass)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.usuario_pass)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.usuario_email)
@@ -44,6 +37,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.id_usuario">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.id_usuario">Editar Usuario</a> |
+    <a asp-action="Index">Listado de Usuarios</a>
 </div>

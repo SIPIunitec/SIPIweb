@@ -1,22 +1,21 @@
 ﻿@model IEnumerable<SIPIweb.Models.tbl_usuario_tmp>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "cargaUsuarioTMPlote";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Datos en la tabla Usuario Temporal</h2>
-
+<h2>Datos cargados por el CSV</h2>
+<h4><b>Origen del CSV: </b>@Model.First().usuario_Origen | <b>Archivo: </b>@ViewData["archivo"] | <b>Archvo: </b>@Model.Count()</h4>    
 <p>
-    <a asp-action="Create">Crear Usuario Temporal</a> |
-    <a asp-action="cargaUsuarioTMPlote" onclick="return checkForm(this);">Carga Usuario Temporal por CSV</a> |
-    <a asp-action="limpiaUsuarioTMP" onclick="return checkForm(this);">Limpia Usuario Temporal</a> |
-    <a asp-action="index" asp-controller="usuario">Lista de Usuario Definitivo</a> |
     <a asp-action="grabarUsuarioDefinitivo" asp-controller="precargaUsuario">Guardar Usuario Definitivo</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                Indice
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.id_usuarioTipo)
             </th>
@@ -29,18 +28,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.usuario_email)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Observaciones)
-            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
+        @{int idx = 0;}
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @{idx = idx + 1;}
+                    @idx
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.id_usuarioTipo)
                 </td>
@@ -53,24 +52,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.usuario_email)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Observaciones)
-                </td>
-          </tr>
+            </tr>
         }
     </tbody>
 </table>
-
-<script type="text/javascript">
-    function checkForm(form) {
-        if (confirm('Esta seguro que desea eliminar toda la tabla temporal de Usuario?')) {
-            return true;
-        } else {
-            alert('No se realizará la limpieza de la tabla temporal de usuario');
-            return false;
-        }
-    }
-</script>

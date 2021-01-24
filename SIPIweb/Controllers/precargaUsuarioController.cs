@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SIPIweb.Models;
+using SIPIweb.Procedimientos;
 
 namespace SIPIweb.Controllers
 {
@@ -19,13 +25,13 @@ namespace SIPIweb.Controllers
             _context = context;
         }
 
-        // GET: precargaUsuario
+        // GET: Listado de Usuario Temporales
         public async Task<IActionResult> Index()
         {
             return View(await _context.tbl_usuario_tmps.ToListAsync());
         }
 
-        // GET: precargaUsuario/Details/5
+        // GET: Detalle de Usuario Temporales
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -43,7 +49,7 @@ namespace SIPIweb.Controllers
             return View(tbl_usuario_tmp);
         }
 
-        // GET: precargaUsuario/Create
+        // GET: Carga de Usuario Temporal Manualmente
         public IActionResult Create()
         {
             ViewData["id_usuarioTipo"] = new SelectList(_context.tbl_usuarioTipos, "id_usuarioTipo", "usuarioTipo_nombre");
@@ -51,26 +57,53 @@ namespace SIPIweb.Controllers
             return View();
         }
 
-        // POST: precargaUsuario/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Realiza Guardado de Usuario Temporal Manualmente
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id_usuario_tmp,id_usuarioTipo,usuario_login,usuario_pass,usuario_email,Estatus,Observaciones")] tbl_usuario_tmp tbl_usuario_tmp)
         {
+            // **** Direcciona a Tablas Temporales y Definitiva **** //
+            var _tablaFinal = new tbl_usuario();
+            var _tablaTMP = tbl_usuario_tmp;
+
             if (ModelState.IsValid)
             {
-                tbl_usuario_tmp.Estatus = false;
-                _context.Add(tbl_usuario_tmp);
+                // **** Variables de Control de Temporal creado **** //
+                _tablaTMP.Estatus = false;
+                _tablaTMP.usuario_createdDay = DateTime.Now;
+                _tablaTMP.usuario_Origen= "SIPI_WEB";
 
+                _context.Add(_tablaTMP);
                 await _context.SaveChangesAsync();
-                validaUsuario(tbl_usuario_tmp.id_usuario_tmp);
-                return RedirectToAction(nameof(Index));
+
+                #region "// **** Guarda Definitiva **** //"
+                migradores _guarda = new migradores(_context);
+                var _resultado = _guarda.migraUsuario(_tablaTMP.id_usuario_tmp, _context, _tablaFinal, _tablaTMP);
+                if (_resultado.Item1 == false)
+                {
+                    if (_tablaFinal.id_usuario > 0)
+                    {
+                        _context.Remove(_tablaTMP);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("details", "usuario", new { @id = _tablaFinal.id_usuario });
+                    }
+                }
+                else
+                {
+                    _tablaTMP.Estatus = _resultado.Item1;
+                    _tablaTMP.Observaciones = _resultado.Item2;
+                    _context.Update(_tablaTMP);
+                    await _context.SaveChangesAsync();
+                }
+
+                #endregion
+
+
             }
             return View(tbl_usuario_tmp);
         }
 
-        // GET: precargaUsuario/Edit/5
+        // GET: Modifica Usuario Temporal
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -86,9 +119,7 @@ namespace SIPIweb.Controllers
             return View(tbl_usuario_tmp);
         }
 
-        // POST: precargaUsuario/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Realiza Modificacion Usuario Temporal 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("id_usuario_tmp,id_usuarioTipo,usuario_login,usuario_pass,usuario_email,Estatus,Observaciones")] tbl_usuario_tmp tbl_usuario_tmp)
@@ -102,6 +133,9 @@ namespace SIPIweb.Controllers
             {
                 try
                 {
+                    tbl_usuario_tmp.Estatus = false;
+                    tbl_usuario_tmp.usuario_createdDay = DateTime.Now;
+                    tbl_usuario_tmp.usuario_Origen = "SIPI_WEB";
                     _context.Update(tbl_usuario_tmp);
                     await _context.SaveChangesAsync();
                 }
@@ -121,7 +155,7 @@ namespace SIPIweb.Controllers
             return View(tbl_usuario_tmp);
         }
 
-        // GET: precargaUsuario/Delete/5
+        // GET: Elimina Usuario Temporal
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -139,7 +173,7 @@ namespace SIPIweb.Controllers
             return View(tbl_usuario_tmp);
         }
 
-        // POST: precargaUsuario/Delete/5
+        // POST: Realiza Elimina Usuario Temporal
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
@@ -155,45 +189,64 @@ namespace SIPIweb.Controllers
             return _context.tbl_usuario_tmps.Any(e => e.id_usuario_tmp == id);
         }
 
-        private string validaUsuario(long id) 
+        // POST: Realiza Elimina Usuario Temporal
+        public async Task<IActionResult> limpiaUsuarioTMP()
         {
-            var usuario = new tbl_usuario();
-            //System.Threading.Tasks.Task<Models.tbl_usuario_tmp> tbl_usuario_tmp;
-            var usuario_tmp = _context.tbl_usuario_tmps.FirstOrDefault(m => m.id_usuario_tmp == id);
-            
-            var propInfo = usuario.GetType().GetProperties();
-            foreach (var item in propInfo)
+            var tbl_usuario_tmp = await _context.tbl_usuario_tmps.ToListAsync();
+            _context.tbl_usuario_tmps.RemoveRange(tbl_usuario_tmp);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Carga Masiva CSV Usuario Temporales
+        public async Task<IActionResult> cargaUsuarioTMPlote()
+        {
+            migradores _guarda = new migradores(_context);
+            var _archivo = "CIT_GUACARA.csv";
+            var records = _guarda.leeCSVUsuario(_archivo);
+
+            ViewData["archivo"] = _archivo;
+            return View(records.ToList());
+        }
+
+        // GET: Guarda Masiva CSV Usuario en Usuario Definitivo
+        public async Task<IActionResult> grabarUsuarioDefinitivo()
+        {
+            migradores _guarda = new migradores(_context);
+            var _archivo = "CIT_GUACARA.csv";
+            var records = _guarda.leeCSVUsuario(_archivo);
+            var _errores = 0;
+             foreach (var usuario in records)
             {
-                var key = Attribute.GetCustomAttribute(item, typeof(KeyAttribute)) as KeyAttribute;
+                var _tablaFinal = new tbl_usuario();
+                var _resultado = _guarda.migraUsuario(usuario.id_usuario_tmp, _context, _tablaFinal, usuario);
 
-                if (key == null)
+                if (_resultado.Item1 == false)
                 {
-                    var campo = item.Name;
-                    //var valor = tbl_usuario_tmp.GetType().GetProperty(campo).GetValue(tbl_usuario_tmp, null);
-
-                    try
+                    if (_tablaFinal.id_usuario > 0)
                     {
-                        var values = usuario_tmp.GetType().GetProperty(campo).GetValue(usuario_tmp, null);
-                        usuario.GetType().GetProperty(campo).SetValue(usuario, values, null);
+                        await _context.SaveChangesAsync();
                     }
-                    catch (System.NullReferenceException e)
-                    {
-
-                        throw;
-                    }
-
-
+                }
+                else
+                {
+                    _errores = _errores + 1;
+                    usuario.Estatus = _resultado.Item1;
+                    usuario.Observaciones = _resultado.Item2;
+                    _context.Update(usuario);
+                    await _context.SaveChangesAsync();
                 }
             }
-            _context.tbl_usuarios.Add(usuario);
-
-
-            //tbl_usuario_tmp.GetType().GetProperty(item.Name).SetValue(tbl_usuario_tmp, item.GetValue(tbl_usuario, null), null);
-            return "0";
-
-
-
+            if (_errores == 0) {
+                return RedirectToAction("index", "usuario");
+            }
+            else
+            {
+                return RedirectToAction("index", "precargaUsuario");
+            }
+            
         }
+
 
     }
 }

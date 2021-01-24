@@ -17,6 +17,7 @@ namespace SIPIweb.Models
         {
         }
 
+        public virtual DbSet<tbl_historico> tbl_historicos { get; set; }
         public virtual DbSet<tbl_informacion> tbl_informacions { get; set; }
         public virtual DbSet<tbl_usuario> tbl_usuarios { get; set; }
         public virtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }

@@ -1,16 +1,18 @@
-﻿@model SIPIweb.Models.tbl_usuario_tmp
+﻿@model SIPIweb.Models.tbl_usuario
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Carga manual de Usuario</h2>
+<h1>Modificar Datos de Usuario</h1>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" onsubmit="return checkForm(this);">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id_usuario" />
             <div class="form-group">
                 <label asp-for="id_usuarioTipo" class="control-label"></label>
                 <select asp-for="id_usuarioTipo" class="form-control" asp-items="ViewBag.id_usuarioTipo"></select>
@@ -18,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="usuario_login" class="control-label"></label>
-                <input asp-for="usuario_login" class="form-control" type="login" />
+                <input asp-for="usuario_login" class="form-control" />
                 <span asp-validation-for="usuario_login" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -32,6 +34,11 @@
                 <span asp-validation-for="usuario_email" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="usuario_createdDay" class="control-label"></label>
+                <input asp-for="usuario_createdDay" class="form-control" readonly />
+                <span asp-validation-for="usuario_createdDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
@@ -39,33 +46,9 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-controller="usuario">Regreso a Listado de Usuarios</a>
+    <a asp-action="Index">Regreso a Listado de Usuarios</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-<script type="text/javascript">
-
-  function checkForm(form)
-  {
-
-      log = form.usuario_login.value;
-      pass = form.usuario_pass.value;
-
-      re = /^\w+$/;
-      if (!re.test(log)) {
-          alert("Error: El Nombre de usuario solo puede tener letras, numeros y guion bajo, sin espacios !!");
-          return false;
-      }
-
-      if (pass.length < 6) {
-        alert("Error: Clave de usuario debe tener por lo menos 6 caracteres");
-        return false;
-    }
-
-    return true;
-  }
-
-</script>
