@@ -47,7 +47,7 @@ namespace SIPIweb.Controllers
         // GET: informacion/Create
         public IActionResult Create()
         {
-            ViewData["id_usuario"] = new SelectList(_context.tbl_usuarios, "id_usuario", "usuario_email");
+            ViewData["id_usuario"] = new SelectList(_context.my_usuarios, "id_usuario", "usuario_email");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace SIPIweb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["id_usuario"] = new SelectList(_context.tbl_usuarios, "id_usuario", "usuario_email", tbl_informacion.id_usuario);
+            ViewData["id_usuario"] = new SelectList(_context.my_usuarios, "id_usuario", "usuario_email", tbl_informacion.id_usuario);
             return View(tbl_informacion);
         }
 
@@ -81,7 +81,7 @@ namespace SIPIweb.Controllers
             {
                 return NotFound();
             }
-            ViewData["id_usuario"] = new SelectList(_context.tbl_usuarios, "id_usuario", "usuario_email", tbl_informacion.id_usuario);
+            ViewData["id_usuario"] = new SelectList(_context.my_usuarios, "id_usuario", "usuario_email", tbl_informacion.id_usuario);
             return View(tbl_informacion);
         }
 
@@ -117,7 +117,7 @@ namespace SIPIweb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["id_usuario"] = new SelectList(_context.tbl_usuarios, "id_usuario", "usuario_email", tbl_informacion.id_usuario);
+            ViewData["id_usuario"] = new SelectList(_context.my_usuarios, "id_usuario", "usuario_email", tbl_informacion.id_usuario);
             return View(tbl_informacion);
         }
 

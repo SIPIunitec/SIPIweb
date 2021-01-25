@@ -32,6 +32,12 @@ namespace SIPIweb.Models
         public long? id_ciudad_nacimiento { get; set; }
         public long? id_ciudad_ubicacion { get; set; }
 
+        [ForeignKey(nameof(id_ciudad_nacimiento))]
+        [InverseProperty(nameof(tbl_geografiaCiudad.tbl_usuarioPersonaid_ciudad_nacimientoNavigations))]
+        public virtual tbl_geografiaCiudad id_ciudad_nacimientoNavigation { get; set; }
+        [ForeignKey(nameof(id_ciudad_ubicacion))]
+        [InverseProperty(nameof(tbl_geografiaCiudad.tbl_usuarioPersonaid_ciudad_ubicacionNavigations))]
+        public virtual tbl_geografiaCiudad id_ciudad_ubicacionNavigation { get; set; }
         [ForeignKey(nameof(id_persona))]
         [InverseProperty(nameof(tbl_usuario.tbl_usuarioPersona))]
         public virtual tbl_usuario id_personaNavigation { get; set; }

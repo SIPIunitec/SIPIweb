@@ -28,7 +28,7 @@ namespace SIPIweb.Controllers
         // GET: Listado de Usuario Temporales
         public async Task<IActionResult> Index()
         {
-            return View(await _context.tbl_usuario_tmps.ToListAsync());
+            return View(await _context.my_usuario_tmps.ToListAsync());
         }
 
         // GET: Detalle de Usuario Temporales
@@ -39,7 +39,7 @@ namespace SIPIweb.Controllers
                 return NotFound();
             }
 
-            var tbl_usuario_tmp = await _context.tbl_usuario_tmps.FirstOrDefaultAsync(m => m.id_usuario_tmp == id);
+            var tbl_usuario_tmp = await _context.my_usuario_tmps.FirstOrDefaultAsync(m => m.id_usuario_tmp == id);
             if (tbl_usuario_tmp == null)
             {
                 return NotFound();
@@ -70,7 +70,7 @@ namespace SIPIweb.Controllers
                 // **** Variables de Control de Temporal creado **** //
                 _tablaTMP.Estatus = false;
                 _tablaTMP.usuario_createdDay = DateTime.Now;
-                _tablaTMP.usuario_Origen= "SIPI_WEB";
+                _tablaTMP.usuario_origen= "SIPI_WEB";
 
                 _context.Add(_tablaTMP);
                 await _context.SaveChangesAsync();
@@ -110,7 +110,7 @@ namespace SIPIweb.Controllers
                 return NotFound();
             }
 
-            var tbl_usuario_tmp = await _context.tbl_usuario_tmps.FindAsync(id);
+            var tbl_usuario_tmp = await _context.my_usuario_tmps.FindAsync(id);
             if (tbl_usuario_tmp == null)
             {
                 return NotFound();
@@ -134,7 +134,7 @@ namespace SIPIweb.Controllers
                 {
                     tbl_usuario_tmp.Estatus = false;
                     tbl_usuario_tmp.usuario_createdDay = DateTime.Now;
-                    tbl_usuario_tmp.usuario_Origen = "SIPI_WEB";
+                    tbl_usuario_tmp.usuario_origen = "SIPI_WEB";
                     _context.Update(tbl_usuario_tmp);
                     await _context.SaveChangesAsync();
                 }
@@ -162,7 +162,7 @@ namespace SIPIweb.Controllers
                 return NotFound();
             }
 
-            var tbl_usuario_tmp = await _context.tbl_usuario_tmps
+            var tbl_usuario_tmp = await _context.my_usuario_tmps
                 .FirstOrDefaultAsync(m => m.id_usuario_tmp == id);
             if (tbl_usuario_tmp == null)
             {
@@ -177,22 +177,22 @@ namespace SIPIweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var tbl_usuario_tmp = await _context.tbl_usuario_tmps.FindAsync(id);
-            _context.tbl_usuario_tmps.Remove(tbl_usuario_tmp);
+            var tbl_usuario_tmp = await _context.my_usuario_tmps.FindAsync(id);
+            _context.my_usuario_tmps.Remove(tbl_usuario_tmp);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool tbl_usuario_tmpExists(long id)
         {
-            return _context.tbl_usuario_tmps.Any(e => e.id_usuario_tmp == id);
+            return _context.my_usuario_tmps.Any(e => e.id_usuario_tmp == id);
         }
 
         // POST: Realiza Elimina Usuario Temporal
         public async Task<IActionResult> limpiaUsuarioTMP()
         {
-            var tbl_usuario_tmp = await _context.tbl_usuario_tmps.ToListAsync();
-            _context.tbl_usuario_tmps.RemoveRange(tbl_usuario_tmp);
+            var tbl_usuario_tmp = await _context.my_usuario_tmps.ToListAsync();
+            _context.my_usuario_tmps.RemoveRange(tbl_usuario_tmp);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

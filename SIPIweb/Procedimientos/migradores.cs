@@ -84,7 +84,7 @@ namespace SIPIweb.Procedimientos
                         usuario_login = csv.GetField<string>("usuario_login"),
                         usuario_pass = csv.GetField<string>("usuario_pass"),
                         usuario_email = csv.GetField<string>("usuario_email"),
-                        usuario_Origen = csv.GetField<string>("Origen"),
+                        usuario_origen = csv.GetField<string>("Origen"),
                         usuario_createdDay = DateTime.Now,
                         Estatus = false
 

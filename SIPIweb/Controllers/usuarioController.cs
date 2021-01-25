@@ -21,7 +21,7 @@ namespace SIPIweb.Controllers
         // GET: usuario
         public async Task<IActionResult> Index()
         {
-            var sipiunitec_dbContext = _context.tbl_usuarios.Include(t => t.id_usuarioTipoNavigation);
+            var sipiunitec_dbContext = _context.my_usuarios.Include(t => t.id_usuarioTipoNavigation);
             return View(await sipiunitec_dbContext.ToListAsync());
         }
 
@@ -33,7 +33,7 @@ namespace SIPIweb.Controllers
                 return NotFound();
             }
 
-            var tbl_usuario = await _context.tbl_usuarios
+            var tbl_usuario = await _context.my_usuarios
                 .Include(t => t.id_usuarioTipoNavigation)
                 .FirstOrDefaultAsync(m => m.id_usuario == id);
             if (tbl_usuario == null)
@@ -52,7 +52,7 @@ namespace SIPIweb.Controllers
                 return NotFound();
             }
 
-            var tbl_usuario = await _context.tbl_usuarios.FindAsync(id);
+            var tbl_usuario = await _context.my_usuarios.FindAsync(id);
             if (tbl_usuario == null)
             {
                 return NotFound();
@@ -105,7 +105,7 @@ namespace SIPIweb.Controllers
                 return NotFound();
             }
 
-            var tbl_usuario = await _context.tbl_usuarios
+            var tbl_usuario = await _context.my_usuarios
                 .Include(t => t.id_usuarioTipoNavigation)
                 .FirstOrDefaultAsync(m => m.id_usuario == id);
             if (tbl_usuario == null)
@@ -121,15 +121,15 @@ namespace SIPIweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var tbl_usuario = await _context.tbl_usuarios.FindAsync(id);
-            _context.tbl_usuarios.Remove(tbl_usuario);
+            var tbl_usuario = await _context.my_usuarios.FindAsync(id);
+            _context.my_usuarios.Remove(tbl_usuario);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool tbl_usuarioExists(long id)
         {
-            return _context.tbl_usuarios.Any(e => e.id_usuario == id);
+            return _context.my_usuarios.Any(e => e.id_usuario == id);
         }
     }
 }

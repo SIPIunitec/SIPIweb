@@ -17,14 +17,19 @@ namespace SIPIweb.Models
         {
         }
 
+        public virtual DbSet<tbl_geografiaCiudad> tbl_geografiaCiudads { get; set; }
+        public virtual DbSet<tbl_geografiaEstado> tbl_geografiaEstados { get; set; }
+        public virtual DbSet<tbl_geografiaPai> tbl_geografiaPais { get; set; }
         public virtual DbSet<tbl_historico> tbl_historicos { get; set; }
         public virtual DbSet<tbl_informacion> tbl_informacions { get; set; }
-        public virtual DbSet<tbl_usuario> tbl_usuarios { get; set; }
+
+        public virtual DbSet<tbl_usuario> my_usuarios { get; set; }
+        public virtual DbSet<tbl_usuario_tmp> my_usuario_tmps { get; set; }
         public virtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
         public virtual DbSet<tbl_usuarioPersona> tbl_usuarioPersonas { get; set; }
         public virtual DbSet<tbl_usuarioRole> tbl_usuarioRoles { get; set; }
         public virtual DbSet<tbl_usuarioTipo> tbl_usuarioTipos { get; set; }
-        public virtual DbSet<tbl_usuario_tmp> tbl_usuario_tmps { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,6 +43,30 @@ namespace SIPIweb.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<tbl_geografiaCiudad>(entity =>
+            {
+                entity.HasOne(d => d.id_estadoNavigation)
+                    .WithMany(p => p.tbl_geografiaCiudads)
+                    .HasForeignKey(d => d.id_estado)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tbl_geografiaCiudad_tbl_geografiaEstado");
+            });
+
+            modelBuilder.Entity<tbl_geografiaEstado>(entity =>
+            {
+                entity.HasOne(d => d.id_paisNavigation)
+                    .WithMany(p => p.tbl_geografiaEstados)
+                    .HasForeignKey(d => d.id_pais)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tbl_geografiaEstado_tbl_geografiaPais");
+            });
+
+            modelBuilder.Entity<tbl_geografiaPai>(entity =>
+            {
+                entity.HasKey(e => e.id_pais)
+                    .HasName("PK_tbl_pais");
+            });
 
             modelBuilder.Entity<tbl_informacion>(entity =>
             {
@@ -88,6 +117,16 @@ namespace SIPIweb.Models
                 entity.Property(e => e.id_persona).ValueGeneratedNever();
 
                 entity.Property(e => e.persona_nombreCompleto).HasComputedColumnSql("(([persona_apellidos]+', ')+[persona_nombres])", false);
+
+                entity.HasOne(d => d.id_ciudad_nacimientoNavigation)
+                    .WithMany(p => p.tbl_usuarioPersonaid_ciudad_nacimientoNavigations)
+                    .HasForeignKey(d => d.id_ciudad_nacimiento)
+                    .HasConstraintName("FK_tbl_usuarioPersona_tbl_geografiaCiudad");
+
+                entity.HasOne(d => d.id_ciudad_ubicacionNavigation)
+                    .WithMany(p => p.tbl_usuarioPersonaid_ciudad_ubicacionNavigations)
+                    .HasForeignKey(d => d.id_ciudad_ubicacion)
+                    .HasConstraintName("FK_tbl_usuarioPersona_tbl_geografiaCiudad1");
 
                 entity.HasOne(d => d.id_personaNavigation)
                     .WithOne(p => p.tbl_usuarioPersona)

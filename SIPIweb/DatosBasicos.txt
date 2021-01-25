@@ -1,1 +1,1 @@
-﻿Scaffold-DbContext "Data Source=(local)\dcserver;Initial Catalog=sipiunitec_db;Integrated Security=True;Connect Timeout=45" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -DataAnnotations -force -UseDatabaseNames
+﻿Scaffold-DbContext "Data Source=(local)\dcserver;Initial Catalog=sipiunitec_db;Integrated Security=True;Connect Timeout=45" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -DataAnnotations -UseDatabaseNames

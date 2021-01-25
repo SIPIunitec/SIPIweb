@@ -18,38 +18,29 @@ namespace SIPIweb.Models
 
         [Key]
         public long id_usuario { get; set; }
-
-        [Display(Name = "Tipo de Usuario")]
         public int id_usuarioTipo { get; set; }
-
         [Required]
-        [StringLength(25), Display(Name ="Nombre de Usuario")]
+        [StringLength(25)]
         public string usuario_login { get; set; }
-
         [Required]
-        [StringLength(15), Display(Name = "Clave de Usuario"), DataType(DataType.Password)]
+        [StringLength(15)]
         public string usuario_pass { get; set; }
-
         [Required]
-        [StringLength(50), Display(Name = "Correo principal de Usuario"),  DataType(DataType.EmailAddress)]
+        [StringLength(50)]
         public string usuario_email { get; set; }
-
-        [Display(Name = "Fecha Creación de Usuario"), DataType(DataType.Date)]
+        [Column(TypeName = "date")]
         public DateTime usuario_createdDay { get; set; }
 
-        [StringLength(50), Display(Name = "Origen de los datos")]
-        public string usuario_Origen { get; set; }
-
+        [Required]
+        [StringLength(50)]
+        public string usuario_origen { get; set; }
 
         [ForeignKey(nameof(id_usuarioTipo))]
-        [InverseProperty(nameof(tbl_usuarioTipo.tbl_usuarios)),Display(Name = "Tipo de Usuario")]
+        [InverseProperty(nameof(tbl_usuarioTipo.tbl_usuarios))]
         public virtual tbl_usuarioTipo id_usuarioTipoNavigation { get; set; }
-
         [InverseProperty("id_personaNavigation")]
         public virtual tbl_usuarioPersona tbl_usuarioPersona { get; set; }
-
         [InverseProperty(nameof(tbl_informacion.id_usuarioNavigation))]
         public virtual ICollection<tbl_informacion> tbl_informacions { get; set; }
-
     }
 }
