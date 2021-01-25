@@ -39,8 +39,7 @@ namespace SIPIweb.Controllers
                 return NotFound();
             }
 
-            var tbl_usuario_tmp = await _context.tbl_usuario_tmps
-                .FirstOrDefaultAsync(m => m.id_usuario_tmp == id);
+            var tbl_usuario_tmp = await _context.tbl_usuario_tmps.FirstOrDefaultAsync(m => m.id_usuario_tmp == id);
             if (tbl_usuario_tmp == null)
             {
                 return NotFound();
