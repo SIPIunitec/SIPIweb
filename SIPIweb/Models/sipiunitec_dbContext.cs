@@ -26,8 +26,10 @@ namespace SIPIweb.Models
         public virtual DbSet<tbl_usuario> my_usuarios { get; set; }
         public virtual DbSet<tbl_usuario_tmp> my_usuario_tmps { get; set; }
         public virtual DbSet<tbl_usuarioEstudiante> my_usuarioEstudiante { get; set; }
+        public virtual DbSet<tbl_usuarioPersona> my_usuarioPersonas { get; set; }
+
         public virtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
-        public virtual DbSet<tbl_usuarioPersona> tbl_usuarioPersonas { get; set; }
+        
         public virtual DbSet<tbl_usuarioRole> tbl_usuarioRoles { get; set; }
         public virtual DbSet<tbl_usuarioTipo> tbl_usuarioTipos { get; set; }
 

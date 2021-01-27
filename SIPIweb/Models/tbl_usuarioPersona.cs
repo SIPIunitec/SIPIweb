@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using static SIPIweb.Models.Metadata;
 
 #nullable disable
 
 namespace SIPIweb.Models
 {
     [Table("tbl_usuarioPersona")]
+    [ModelMetadataType(typeof(tbl_usuarioPersonaValidadores))]
     public partial class tbl_usuarioPersona
     {
         public tbl_usuarioPersona()

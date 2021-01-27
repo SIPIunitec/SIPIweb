@@ -77,5 +77,48 @@ namespace SIPIweb.Models
             public string usuario_origen { get; set; }
         }
 
+        public class tbl_usuarioPersonaValidadores
+        {
+            [Key]
+            public long id_persona { get; set; }
+
+            [Required]
+            [StringLength(50), Display(Name ="Nombres de la persona")]
+            public string persona_nombres { get; set; }
+
+            [StringLength(50), Display(Name = "Apellidos de la persona")]
+            public string persona_apellidos { get; set; }
+
+            [StringLength(102), Display(Name = "Nombre Completo")]
+            public string persona_nombreCompleto { get; set; }
+
+            [Column(TypeName = "date"), Display(Name = "Fecha Nacimiento"), DataType(DataType.Date)]
+            public DateTime? persona_nacimiento { get; set; }
+
+            [StringLength(3), Display(Name = "Tipo Sangre")]
+            public string persona_sangre { get; set; }
+
+            [Display(Name = "Ciudad de Nacimiento")]
+            public long? id_ciudad_nacimiento { get; set; }
+
+            [Display(Name = "Ubicación Actual")]
+            public long? id_ciudad_ubicacion { get; set; }
+
+            [ForeignKey(nameof(id_ciudad_nacimiento)), Display(Name = "Lugar de Nacimiento")]
+            [InverseProperty(nameof(tbl_geografiaCiudad.tbl_usuarioPersonaid_ciudad_nacimientoNavigations))]
+            public virtual tbl_geografiaCiudad id_ciudad_nacimientoNavigation { get; set; }
+
+            [ForeignKey(nameof(id_ciudad_ubicacion)), Display(Name = "Lugar de Ubicación Actual")]
+            [InverseProperty(nameof(tbl_geografiaCiudad.tbl_usuarioPersonaid_ciudad_ubicacionNavigations))]
+            public virtual tbl_geografiaCiudad id_ciudad_ubicacionNavigation { get; set; }
+
+            [ForeignKey(nameof(id_persona))]
+            [InverseProperty(nameof(tbl_usuario.tbl_usuarioPersona))]
+            public virtual tbl_usuario id_personaNavigation { get; set; }
+
+            [InverseProperty(nameof(tbl_usuarioAsignaRol.id_personaNavigation))]
+            public virtual ICollection<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
+
+        }
     }
 }
