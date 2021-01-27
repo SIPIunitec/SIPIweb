@@ -8,7 +8,8 @@
 <h2>Datos leidos desde el CSV</h2>
 <h4><b>Origen del CSV: </b>@Model.First().usuario_origen | <b>Archivo: </b>@ViewData["archivo"] | <b>Archvo: </b>@Model.Count()</h4>    
 <p>
-    <a asp-action="grabarUsuarioDefinitivo" asp-controller="precargaUsuario">Guardar Usuario Definitivo</a>
+    <a asp-action="grabarUsuarioDefinitivo" asp-controller="precargaUsuario" onclick="return confirm('Esta seguro que desea importar este archivo');">Guardar Usuario Definitivo</a>
+    <a asp-action="index" asp-controller="usuario">Lista de Usuario Definitivo</a>
 </p>
 <table class="table">
     <thead>

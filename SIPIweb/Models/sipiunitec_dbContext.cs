@@ -17,19 +17,24 @@ namespace SIPIweb.Models
         {
         }
 
+        // ***** Geografia ***** //
         public virtual DbSet<tbl_geografiaCiudad> tbl_geografiaCiudads { get; set; }
         public virtual DbSet<tbl_geografiaEstado> tbl_geografiaEstados { get; set; }
         public virtual DbSet<tbl_geografiaPai> tbl_geografiaPais { get; set; }
-        public virtual DbSet<tbl_historico> tbl_historicos { get; set; }
-        public virtual DbSet<tbl_informacion> tbl_informacions { get; set; }
 
+        // ***** Usuarios ***** //
         public virtual DbSet<tbl_usuario> my_usuarios { get; set; }
         public virtual DbSet<tbl_usuario_tmp> my_usuario_tmps { get; set; }
+        public virtual DbSet<tbl_usuarioEstudiante> my_usuarioEstudiante { get; set; }
         public virtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
         public virtual DbSet<tbl_usuarioPersona> tbl_usuarioPersonas { get; set; }
         public virtual DbSet<tbl_usuarioRole> tbl_usuarioRoles { get; set; }
         public virtual DbSet<tbl_usuarioTipo> tbl_usuarioTipos { get; set; }
-        
+
+        public virtual DbSet<tbl_historico> tbl_historicos { get; set; }
+        public virtual DbSet<tbl_informacion> tbl_informacions { get; set; }
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -107,6 +112,17 @@ namespace SIPIweb.Models
                     .HasForeignKey(d => d.id_usuarioRoles)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_tbl_usuarioAsignaRol_tbl_usuarioRoles");
+            });
+
+            modelBuilder.Entity<tbl_usuarioEstudiante>(entity =>
+            {
+                entity.Property(e => e.id_usuarioEstudiante).ValueGeneratedNever();
+
+                entity.HasOne(d => d.id_usuarioEstudianteNavigation)
+                    .WithOne(p => p.tbl_usuarioEstudiante)
+                    .HasForeignKey<tbl_usuarioEstudiante>(d => d.id_usuarioEstudiante)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tbl_usuarioEstudiante_tbl_usuario");
             });
 
             modelBuilder.Entity<tbl_usuarioPersona>(entity =>

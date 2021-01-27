@@ -62,16 +62,16 @@ namespace SIPIweb.Controllers
         public async Task<IActionResult> Create([Bind("id_usuario_tmp,id_usuarioTipo,usuario_login,usuario_pass,usuario_email,Estatus,Observaciones")] tbl_usuario_tmp tbl_usuario_tmp)
         {
             // **** Direcciona a Tablas Temporales y Definitiva **** //
+            tbl_usuario_tmp.Estatus = false;
+            tbl_usuario_tmp.usuario_createdDay = DateTime.Now;
+            tbl_usuario_tmp.usuario_origen = "SIPI_WEB";
+            
             var _tablaFinal = new tbl_usuario();
             var _tablaTMP = tbl_usuario_tmp;
 
             if (ModelState.IsValid)
             {
                 // **** Variables de Control de Temporal creado **** //
-                _tablaTMP.Estatus = false;
-                _tablaTMP.usuario_createdDay = DateTime.Now;
-                _tablaTMP.usuario_origen= "SIPI_WEB";
-
                 _context.Add(_tablaTMP);
                 await _context.SaveChangesAsync();
 
@@ -94,10 +94,7 @@ namespace SIPIweb.Controllers
                     _context.Update(_tablaTMP);
                     await _context.SaveChangesAsync();
                 }
-
                 #endregion
-
-
             }
             return View(tbl_usuario_tmp);
         }

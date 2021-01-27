@@ -1,0 +1,14 @@
+﻿@foreach (var item in ViewContext.ViewData.ModelState)
+{
+    if (item.Value.Errors.Any())
+    {
+        <h3 style="color:red">Errores encontrados</h3>
+        <table class="model-state">
+            <tr>
+                <td><b>@item.Key</b></td>
+                <td>@((item.Value == null || item.Value == null) ? "<null>" : item.Value.RawValue)</td>
+                <td>@(string.Join("; ", item.Value.Errors.Select(x => x.ErrorMessage)))</td>
+            </tr>
+        </table>
+    }
+}
