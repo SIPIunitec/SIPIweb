@@ -1,0 +1,68 @@
+﻿@model IEnumerable<SIPIweb.Models.tbl_usuarioPersona_tmp>
+
+@{
+    ViewData["Title"] = "cargaPersonaTMPlote";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Personas leidas desde el CSV</h2>
+<h4><b>Origen del CSV: </b>@Model.First().persona_origen | <b>Archivo: </b>@ViewData["archivo"] | <b>Archvo: </b>@Model.Count()</h4>
+<p>
+    <a asp-action="grabarPersonaDefinitivo" asp-controller="precargaPersona" onclick="return confirm('Esta seguro que desea importar este archivo');">Guardar Persona Definitivo</a>
+    <a asp-action="index" asp-controller="Persona">Lista de Usuario Definitivo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id_persona_tmp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_apellidos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_origen)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_persona_tmp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_apellidos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_origen)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id_persona_tmp">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id_persona_tmp">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id_persona_tmp">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

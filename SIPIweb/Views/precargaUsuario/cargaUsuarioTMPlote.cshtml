@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Datos leidos desde el CSV</h2>
+<h2>Usuarios leidos desde el CSV</h2>
 <h4><b>Origen del CSV: </b>@Model.First().usuario_origen | <b>Archivo: </b>@ViewData["archivo"] | <b>Archvo: </b>@Model.Count()</h4>    
 <p>
     <a asp-action="grabarUsuarioDefinitivo" asp-controller="precargaUsuario" onclick="return confirm('Esta seguro que desea importar este archivo');">Guardar Usuario Definitivo</a>

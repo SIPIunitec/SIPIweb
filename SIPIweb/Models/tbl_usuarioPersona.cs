@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc;
-using static SIPIweb.Models.Metadata;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace SIPIweb.Models
 {
     [Table("tbl_usuarioPersona")]
-    [ModelMetadataType(typeof(tbl_usuarioPersonaValidadores))]
     public partial class tbl_usuarioPersona
     {
         public tbl_usuarioPersona()
@@ -29,10 +27,14 @@ namespace SIPIweb.Models
         public string persona_nombreCompleto { get; set; }
         [Column(TypeName = "date")]
         public DateTime? persona_nacimiento { get; set; }
-        [StringLength(3)]
+        [StringLength(15)]
         public string persona_sangre { get; set; }
         public long? id_ciudad_nacimiento { get; set; }
         public long? id_ciudad_ubicacion { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime? persona_createdDay { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime? persona_actualizacionDay { get; set; }
 
         [ForeignKey(nameof(id_ciudad_nacimiento))]
         [InverseProperty(nameof(tbl_geografiaCiudad.tbl_usuarioPersonaid_ciudad_nacimientoNavigations))]

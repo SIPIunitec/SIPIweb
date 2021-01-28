@@ -77,7 +77,7 @@ namespace SIPIweb.Controllers
 
                 #region "// **** Guarda Definitiva **** //"
                 migradores _guarda = new migradores(_context);
-                var _resultado = _guarda.migraUsuario(_tablaTMP.id_usuario_tmp, _context, _tablaFinal, _tablaTMP);
+                var _resultado = _guarda.migraGeneral(_tablaTMP.id_usuario_tmp, _context, _tablaFinal, _tablaTMP,true);
                 if (_resultado.Item1 == false)
                 {
                     if (_tablaFinal.id_usuario > 0)
@@ -215,7 +215,7 @@ namespace SIPIweb.Controllers
              foreach (var usuario in records)
             {
                 var _tablaFinal = new tbl_usuario();
-                var _resultado = _guarda.migraUsuario(usuario.id_usuario_tmp, _context, _tablaFinal, usuario);
+                var _resultado = _guarda.migraGeneral(usuario.id_usuario_tmp, _context, _tablaFinal, usuario, false);
 
                 if (_resultado.Item1 == false)
                 {

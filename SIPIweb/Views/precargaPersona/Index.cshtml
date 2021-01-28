@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SIPIweb.Models.tbl_usuarioPersona_tmp>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Datos en la tabla Persona Temporal</h2>
+
+<p>
+    <a asp-action="Create">Crear Persona Temporal</a> |
+    <a asp-action="cargaPersonaTMPlote" onclick="return checkForm(this);">Carga Persona Temporal por CSV</a> |
+    <a asp-action="limpiaPersonaTMP" onclick="return checkForm(this);">Limpia Persona Temporal</a> |
+    <a asp-action="index" asp-controller="Persona">Lista de Persona Definitivo</a> |
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id_persona_tmp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_apellidos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.persona_origen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observaciones)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_persona_tmp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_apellidos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.persona_origen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observaciones)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estatus)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id_persona_tmp">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id_persona_tmp">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id_persona_tmp">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

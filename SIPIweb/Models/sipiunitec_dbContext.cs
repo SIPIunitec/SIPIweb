@@ -25,18 +25,17 @@ namespace SIPIweb.Models
         // ***** Usuarios ***** //
         public virtual DbSet<tbl_usuario> my_usuarios { get; set; }
         public virtual DbSet<tbl_usuario_tmp> my_usuario_tmps { get; set; }
-        public virtual DbSet<tbl_usuarioEstudiante> my_usuarioEstudiante { get; set; }
         public virtual DbSet<tbl_usuarioPersona> my_usuarioPersonas { get; set; }
+        public virtual DbSet<tbl_usuarioPersona_tmp> my_usuarioPersona_tmps { get; set; }
 
-        public virtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
-        
+        public virtual DbSet<tbl_usuarioEstudiante> my_usuarioEstudiante { get; set; }
+        // public tbl_usuarioPersona_tmpvirtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
+
         public virtual DbSet<tbl_usuarioRole> tbl_usuarioRoles { get; set; }
         public virtual DbSet<tbl_usuarioTipo> tbl_usuarioTipos { get; set; }
 
         public virtual DbSet<tbl_historico> tbl_historicos { get; set; }
         public virtual DbSet<tbl_informacion> tbl_informacions { get; set; }
-
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -151,6 +150,15 @@ namespace SIPIweb.Models
                     .HasForeignKey<tbl_usuarioPersona>(d => d.id_persona)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_usuario_persona_tbl_usuario_tbl");
+            });
+
+            modelBuilder.Entity<tbl_usuarioPersona_tmp>(entity =>
+            {
+                entity.Property(e => e.persona_email).IsFixedLength(true);
+
+                entity.Property(e => e.persona_login).IsFixedLength(true);
+
+                entity.Property(e => e.persona_origen).IsFixedLength(true);
             });
 
             modelBuilder.Entity<tbl_usuarioRole>(entity =>

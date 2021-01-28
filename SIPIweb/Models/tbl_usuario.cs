@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using static SIPIweb.Models.Metadata;
 
 #nullable disable
 
 namespace SIPIweb.Models
 {
-    
     [Table("tbl_usuario")]
-    [ModelMetadataType(typeof(tbl_usuarioValidadores))]
     public partial class tbl_usuario
     {
         public tbl_usuario()
@@ -34,7 +29,9 @@ namespace SIPIweb.Models
         public string usuario_email { get; set; }
         [Column(TypeName = "date")]
         public DateTime usuario_createdDay { get; set; }
-        [Required]
+        [Column(TypeName = "date")]
+        public DateTime? usuario_actualizacionDay { get; set; }
+
         [StringLength(50)]
         public string usuario_origen { get; set; }
 

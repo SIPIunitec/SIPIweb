@@ -21,7 +21,7 @@ namespace SIPIweb.Controllers
         // GET: usuario
         public async Task<IActionResult> Index()
         {
-            var sipiunitec_dbContext = _context.my_usuarios.Include(t => t.id_usuarioTipoNavigation);
+            var sipiunitec_dbContext = _context.my_usuarios.Include(t => t.id_usuarioTipoNavigation).OrderByDescending(x => x.id_usuario);
             return View(await sipiunitec_dbContext.ToListAsync());
         }
 

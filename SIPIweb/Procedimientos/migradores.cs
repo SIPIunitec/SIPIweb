@@ -21,14 +21,14 @@ namespace SIPIweb.Procedimientos
         }
 
         #region "// *** Usuarios *** //
-        public (bool, string) migraUsuario(long id, sipiunitec_dbContext _MiContexto, object _tablaDestino, object _tablaTemporal)
+        public (bool, string) migraGeneral(long id, sipiunitec_dbContext _MiContexto, object _tablaDestino, object _tablaTemporal, bool _saltaClave)
         {
             #region "*** Lee Valor TMP y Crea objeto a guardar ***"
             var propInfo = _tablaDestino.GetType().GetProperties();
             foreach (var item in propInfo)
             {
                 KeyAttribute key = Attribute.GetCustomAttribute(item, typeof(KeyAttribute)) as KeyAttribute;
-                if (key == null)
+                if (key == null || _saltaClave==false)
                 {
                     try
                     {
@@ -58,7 +58,7 @@ namespace SIPIweb.Procedimientos
                 return (true, ex.InnerException.Message.ToString());
             }
             #endregion
-            return (false, "");
+            
         }
         public List<tbl_usuario_tmp> leeCSVUsuario(string _ubicacionCSV)
         {
@@ -89,6 +89,46 @@ namespace SIPIweb.Procedimientos
                         Estatus = false
 
                     };
+                    records.Add(record);
+                }
+            }
+
+            return records;
+        }
+        #endregion
+
+        #region "// *** Persona *** //
+        public List<tbl_usuarioPersona_tmp> leeCSVpersona(string _ubicacionCSV)
+        {
+            var records = new List<tbl_usuarioPersona_tmp>();
+            var _archivo = _ubicacionCSV;
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                PrepareHeaderForMatch = (string header, int index) => header.ToLower(),
+                Delimiter = ";"
+            };
+
+            using (var reader = new System.IO.StreamReader("csv\\" + _archivo))
+            using (var csv = new CsvReader(reader, config))
+            {
+                csv.Read();
+                csv.ReadHeader();
+                while (csv.Read())
+                {
+                    var record = new tbl_usuarioPersona_tmp
+                    {
+                        persona_nombres = csv.GetField<string>("persona_nombres"),
+                        persona_apellidos = csv.GetField<string>("persona_apellidos"),
+                        persona_login = csv.GetField<string>("persona_login"),
+                        persona_email = csv.GetField<string>("persona_email"),
+                        persona_origen = csv.GetField<string>("persona_origen"),
+                        persona_createdDay = DateTime.Now,
+                        Estatus = false
+                    };
+                    var _usuario = _context.my_usuarios.FirstOrDefault(t => t.usuario_login.Equals(record.persona_login) || t.usuario_login.Equals(record.persona_login));
+                   
+                    if (_usuario!=null) record.id_persona_tmp = _usuario.id_usuario;
                     records.Add(record);
                 }
             }

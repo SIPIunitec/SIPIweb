@@ -27,7 +27,6 @@ namespace SIPIweb.Models
             [Display(Name = "Fecha Creación de Usuario"), DataType(DataType.Date)]
             public DateTime usuario_createdDay { get; set; }
 
-            [Required]
             [StringLength(50), Display(Name = "Origen de los datos")]
             public string usuario_origen { get; set; }
 

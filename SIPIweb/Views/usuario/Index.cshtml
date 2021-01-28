@@ -50,6 +50,15 @@
                 @Html.DisplayFor(modelItem => item.usuario_origen)
             </td>
             <td>
+                @switch (item.id_usuarioTipo)
+                {
+                    case 1:
+                        <a asp-action="Create" asp-controller="precargaPersona" asp-route-id="@item.id_usuario">Datos Persona</a><br />
+                        break;
+                    case 2: <h1>Prod Site</h1>
+                        break;
+                }
+
                 <a asp-action="Edit" asp-route-id="@item.id_usuario">Modificar</a> |
                 <a asp-action="Details" asp-route-id="@item.id_usuario">Detalles</a> |
                 <a asp-action="Delete" asp-route-id="@item.id_usuario">Borrar</a>
