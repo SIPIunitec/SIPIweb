@@ -25,7 +25,7 @@ namespace SIPIweb.Models
         public string usuario_email { get; set; }
         [Column(TypeName = "date")]
         public DateTime usuario_createdDay { get; set; }
-
+        [Required]
         [StringLength(50)]
         public string usuario_origen { get; set; }
         public string Observaciones { get; set; }

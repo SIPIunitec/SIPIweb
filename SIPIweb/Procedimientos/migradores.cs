@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace SIPIweb.Procedimientos
@@ -21,7 +22,7 @@ namespace SIPIweb.Procedimientos
         }
 
         #region "// *** Usuarios *** //
-        public (bool, string) migraGeneral(long id, sipiunitec_dbContext _MiContexto, object _tablaDestino, object _tablaTemporal, bool _saltaClave)
+        public (bool, string) migraGeneral(sipiunitec_dbContext _MiContexto, object _tablaDestino, object _tablaTemporal, bool _saltaClave, [Optional] string _clave, [Optional] long _valor)
         {
             #region "*** Lee Valor TMP y Crea objeto a guardar ***"
             var propInfo = _tablaDestino.GetType().GetProperties();
@@ -41,6 +42,10 @@ namespace SIPIweb.Procedimientos
                         }
                     }
                     catch (DbUpdateException) { }
+                }else if (_clave != null)
+                {
+                    var values = _valor;
+                    _tablaDestino.GetType().GetProperty(_clave).SetValue(_tablaDestino, values, null);
                 }
             }
             #endregion
@@ -126,9 +131,9 @@ namespace SIPIweb.Procedimientos
                         persona_createdDay = DateTime.Now,
                         Estatus = false
                     };
-                    var _usuario = _context.my_usuarios.FirstOrDefault(t => t.usuario_login.Equals(record.persona_login) || t.usuario_login.Equals(record.persona_login));
+                    //var _usuario = _context.my_usuarios.FirstOrDefault(t => t.usuario_login.Equals(record.persona_login) || t.usuario_login.Equals(record.persona_login));
                    
-                    if (_usuario!=null) record.id_persona_tmp = _usuario.id_usuario;
+                   // if (_usuario!=null) record.id_persona = _usuario.id_usuario;
                     records.Add(record);
                 }
             }

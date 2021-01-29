@@ -59,25 +59,20 @@ namespace SIPIweb.Controllers
         // POST: Realiza Guardado de Usuario Temporal Manualmente
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_usuario_tmp,id_usuarioTipo,usuario_login,usuario_pass,usuario_email,Estatus,Observaciones")] tbl_usuario_tmp tbl_usuario_tmp)
+        public async Task<IActionResult> Create([Bind("id_usuario_tmp,id_usuarioTipo,usuario_login,usuario_pass,usuario_email,usuario_origen,Estatus,Observaciones,usuario_createdDay")] tbl_usuario_tmp tbl_usuario_tmp)
         {
-            // **** Direcciona a Tablas Temporales y Definitiva **** //
-            tbl_usuario_tmp.Estatus = false;
-            tbl_usuario_tmp.usuario_createdDay = DateTime.Now;
-            tbl_usuario_tmp.usuario_origen = "SIPI_WEB";
-            
-            var _tablaFinal = new tbl_usuario();
-            var _tablaTMP = tbl_usuario_tmp;
-
             if (ModelState.IsValid)
             {
+                var _tablaFinal = new tbl_usuario();
+                var _tablaTMP = tbl_usuario_tmp;
+
                 // **** Variables de Control de Temporal creado **** //
                 _context.Add(_tablaTMP);
                 await _context.SaveChangesAsync();
 
                 #region "// **** Guarda Definitiva **** //"
                 migradores _guarda = new migradores(_context);
-                var _resultado = _guarda.migraGeneral(_tablaTMP.id_usuario_tmp, _context, _tablaFinal, _tablaTMP,true);
+                var _resultado = _guarda.migraGeneral(_context, _tablaFinal, _tablaTMP,true);
                 if (_resultado.Item1 == false)
                 {
                     if (_tablaFinal.id_usuario > 0)
@@ -215,7 +210,7 @@ namespace SIPIweb.Controllers
              foreach (var usuario in records)
             {
                 var _tablaFinal = new tbl_usuario();
-                var _resultado = _guarda.migraGeneral(usuario.id_usuario_tmp, _context, _tablaFinal, usuario, false);
+                var _resultado = _guarda.migraGeneral(_context, _tablaFinal, usuario, false);
 
                 if (_resultado.Item1 == false)
                 {

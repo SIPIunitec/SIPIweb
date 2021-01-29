@@ -34,7 +34,7 @@ namespace SIPIweb.Controllers
             }
 
             var tbl_usuarioPersona_tmp = await _context.my_usuarioPersona_tmps
-                .FirstOrDefaultAsync(m => m.id_persona_tmp == id);
+                .FirstOrDefaultAsync(m => m.id_persona == id);
             if (tbl_usuarioPersona_tmp == null)
             {
                 return NotFound();
@@ -72,7 +72,7 @@ namespace SIPIweb.Controllers
                 migradores _guarda = new migradores(_context);
                 var _id = id_usuario;
                 _tablaFinal.id_persona = _id;
-                 var _resultado = _guarda.migraGeneral(_id, _context, _tablaFinal, _tablaTMP, true);
+                 var _resultado = _guarda.migraGeneral(_context, _tablaFinal, _tablaTMP, true);
                 if (_resultado.Item1 == false)
                 {
                     if (_id > 0)
@@ -114,7 +114,7 @@ namespace SIPIweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("id_persona_tmp,persona_nombres,persona_apellidos,persona_login,persona_email,persona_origen,Observaciones,Estatus")] tbl_usuarioPersona_tmp tbl_usuarioPersona_tmp)
         {
-            if (id != tbl_usuarioPersona_tmp.id_persona_tmp)
+            if (id != tbl_usuarioPersona_tmp.id_persona)
             {
                 return NotFound();
             }
@@ -128,7 +128,7 @@ namespace SIPIweb.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!tbl_usuarioPersona_tmpExists(tbl_usuarioPersona_tmp.id_persona_tmp))
+                    if (!tbl_usuarioPersona_tmpExists(tbl_usuarioPersona_tmp.id_persona))
                     {
                         return NotFound();
                     }
@@ -151,7 +151,7 @@ namespace SIPIweb.Controllers
             }
 
             var tbl_usuarioPersona_tmp = await _context.my_usuarioPersona_tmps
-                .FirstOrDefaultAsync(m => m.id_persona_tmp == id);
+                .FirstOrDefaultAsync(m => m.id_persona == id);
             if (tbl_usuarioPersona_tmp == null)
             {
                 return NotFound();
@@ -172,18 +172,26 @@ namespace SIPIweb.Controllers
 
         private bool tbl_usuarioPersona_tmpExists(long id)
         {
-            return _context.my_usuarioPersona_tmps.Any(e => e.id_persona_tmp == id);
+            return _context.my_usuarioPersona_tmps.Any(e => e.id_persona == id);
         }
 
         // GET: Carga Masiva CSV Usuario Temporales
         public async Task<IActionResult> cargaPersonaTMPlote()
         {
+            //_context.Database.ExecuteSqlRaw("TRUNCATE TABLE tbl_");
+
             migradores _guarda = new migradores(_context);
             var _archivo = "CIT_GUACARA_persona.csv";
             var records = _guarda.leeCSVpersona(_archivo);
 
+            _context.my_usuarioPersona_tmps.AddRange(records);
+   
+            await _context.SaveChangesAsync();
+
+            var _personas = _context.my_usuarioPersona_tmps;
+
             ViewData["archivo"] = _archivo;
-            return View(records.ToList());
+            return View(_personas.ToList());
         }
 
         public async Task<IActionResult> grabarPersonaDefinitivo()
@@ -193,34 +201,47 @@ namespace SIPIweb.Controllers
             var records = _guarda.leeCSVpersona(_archivo);
             var _errores = 0;
 
+           // _context.my_usuarioPersona_tmps.Add((records);
+
+
             foreach (var persona in records)
             {
-                var _tablaFinal = new tbl_usuarioPersona();
-                var _resultado = _guarda.migraGeneral(persona.id_persona_tmp, _context, _tablaFinal, persona,false);
-
-                if (_resultado.Item1 == false)
+                var _usuario = _context.my_usuarios.FirstOrDefault(t => t.usuario_login.Equals(persona.persona_login) || t.usuario_login.Equals(persona.persona_login));
+                if (_usuario!= null)
                 {
-                    if (_tablaFinal.id_persona > 0)
+                    var _tablaFinal = new tbl_usuarioPersona();
+ 
+                    var _resultado = _guarda.migraGeneral(_context, _tablaFinal, persona, true, "id_persona", _usuario.id_usuario);
+                    if (_resultado.Item1 == false)
                     {
+                        if (_tablaFinal.id_persona > 0)
+                        {
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        _errores = _errores + 1;
+                        persona.Estatus = _resultado.Item1;
+                        persona.Observaciones = _resultado.Item2;
+                        _context.Update(persona);
                         await _context.SaveChangesAsync();
                     }
                 }
                 else
                 {
                     _errores = _errores + 1;
-                    persona.Estatus = _resultado.Item1;
-                    persona.Observaciones = _resultado.Item2;
-                    _context.Update(persona);
-                    await _context.SaveChangesAsync();
                 }
+
             }
+
             if (_errores == 0)
             {
-                return RedirectToAction("index", "usuario");
+                return RedirectToAction("index", "Persona");
             }
             else
             {
-                return RedirectToAction("index", "precargaUsuario");
+                return RedirectToAction("index", "precargaPersona");
             }
 
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -31,7 +32,7 @@ namespace SIPIweb.Models
         public DateTime usuario_createdDay { get; set; }
         [Column(TypeName = "date")]
         public DateTime? usuario_actualizacionDay { get; set; }
-
+        [Required]
         [StringLength(50)]
         public string usuario_origen { get; set; }
 

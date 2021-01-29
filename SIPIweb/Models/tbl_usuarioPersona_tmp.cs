@@ -12,7 +12,7 @@ namespace SIPIweb.Models
     public partial class tbl_usuarioPersona_tmp
     {
         [Key]
-        public long id_persona_tmp { get; set; }
+        public long id_persona { get; set; }
         [Required]
         [StringLength(50)]
         public string persona_nombres { get; set; }
@@ -27,6 +27,6 @@ namespace SIPIweb.Models
         [Column(TypeName = "date")]
         public DateTime? persona_createdDay { get; set; }
         public string Observaciones { get; set; }
-        public bool Estatus { get; set; }
+        public bool? Estatus { get; set; }
     }
 }

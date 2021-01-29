@@ -1,6 +1,6 @@
 ﻿Scaffold-DbContext "Data Source=(local)\dcserver;Initial Catalog=sipiunitec_db;Integrated Security=True;Connect Timeout=45" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -DataAnnotations -UseDatabaseNames
 
-       // ***** Geografia ***** //
+        // ***** Geografia ***** //
         public virtual DbSet<tbl_geografiaCiudad> tbl_geografiaCiudads { get; set; }
         public virtual DbSet<tbl_geografiaEstado> tbl_geografiaEstados { get; set; }
         public virtual DbSet<tbl_geografiaPai> tbl_geografiaPais { get; set; }
@@ -12,11 +12,10 @@
         public virtual DbSet<tbl_usuarioPersona_tmp> my_usuarioPersona_tmps { get; set; }
 
         public virtual DbSet<tbl_usuarioEstudiante> my_usuarioEstudiante { get; set; }
-        public virtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
+        // public tbl_usuarioPersona_tmpvirtual DbSet<tbl_usuarioAsignaRol> tbl_usuarioAsignaRols { get; set; }
 
         public virtual DbSet<tbl_usuarioRole> tbl_usuarioRoles { get; set; }
         public virtual DbSet<tbl_usuarioTipo> tbl_usuarioTipos { get; set; }
 
         public virtual DbSet<tbl_historico> tbl_historicos { get; set; }
         public virtual DbSet<tbl_informacion> tbl_informacions { get; set; }
-

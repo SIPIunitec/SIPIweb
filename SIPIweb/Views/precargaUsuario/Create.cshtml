@@ -40,6 +40,9 @@
                 <span asp-validation-for="usuario_email" class="text-danger"></span>
             </th>
             <th colspan="2">
+                <input type="hidden" asp-for="Estatus" class="form-control" value=false />
+                <input type="hidden" asp-for="usuario_createdDay" class="form-control" value="@DateTime.Now " />
+                <input type="hidden" asp-for="usuario_origen" class="form-control" value="SIPI_WEB" />
                 <input type="submit" value="Guardar" class="btn btn-primary" style="width: 100%;" />
             </th>
         </tr>
